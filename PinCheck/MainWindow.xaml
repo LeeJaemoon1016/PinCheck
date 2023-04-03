@@ -1,0 +1,647 @@
+﻿<Window x:Class="PinCheck.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PinCheck"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="747" Width="547.333" ResizeMode="NoResize"
+        Closing="MainWindowClosing" x:Name="windowMain">
+    <Window.ContextMenu>
+        <ContextMenu/>
+    </Window.ContextMenu>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="270*"/>
+            <ColumnDefinition Width="220*"/>
+            <ColumnDefinition Width="51*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height = "*" />
+            <RowDefinition Height = "227*" />
+            <RowDefinition Height = "119*" />
+            <RowDefinition Height = "255" />
+            <RowDefinition Height = "115*" />
+        </Grid.RowDefinitions>
+
+        <!--타이틀바 그리드-->
+        <Grid Grid.Row="0" Name="controlGrid0" Height="24" VerticalAlignment="Top" Margin="51,-25,-1,0" Grid.Column="1" Grid.ColumnSpan="2">
+            <Button FontFamily="Webdings"
+                    x:Name="MinimizeButton"
+                    Content="0" Margin="164,4,37,2" RenderTransformOrigin="0.512,0.456"/>
+        </Grid>
+        <!--환경설정 그리드-->
+        <Grid Grid.Row="1" Name="controlGrid1" Grid.ColumnSpan="3" Height="174" VerticalAlignment="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="13*"/>
+                <ColumnDefinition Width="110*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <GroupBox Header="프로그램 셋팅" Grid.Row="0" Margin="1,1,1,-20" Grid.ColumnSpan="2">
+                <Grid Margin="1,1,1,-1" Height="171" VerticalAlignment="Top">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="12*"/>
+                        <ColumnDefinition Width="14*"/>
+                        <ColumnDefinition Width="499*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock TextAlignment="Center" Margin="10,7,464,144" VerticalAlignment="Center" FontSize="13" Grid.ColumnSpan="3">PORT :</TextBlock>
+                    <ComboBox x:Name="comboTop" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="90" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="40,5,0,0" Grid.Column="2" />
+                    <TextBlock TextAlignment="Center" Margin="10,38,464,115" VerticalAlignment="Center" FontSize="13" Grid.ColumnSpan="3">BAUD :</TextBlock>
+                    <TextBox x:Name="textBoxTopBaud" Text="115200" IsReadOnly="True" TextAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="90" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="40,35,0,0" Grid.Column="2" />
+                    <Button Content="상판연결" Width="90" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="135,5,0,0" Click="ConnectTopBoard" Grid.Column="2" />
+                    <Button Content="연결해제" Width="90" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="135,36,0,0" Click="DisConnectTopBoard" Grid.Column="2" />
+                    <Button Content="핀체크" Width="90" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="40,65,0,0" Click="GetPinData" Grid.Column="2" />
+                    <Button Content="VOL체크" Width="90" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="135,65,0,0" Click="GetVolData" Grid.Column="2" />
+                    <Button x:Name="ConnectUpBoard" Content="상판보드" Foreground="White" Width="60" Height="68" HorizontalAlignment="Right" VerticalContentAlignment="Center" Margin="0,2,126,0" Grid.Column="2" VerticalAlignment="Top" HorizontalContentAlignment="Center">
+                        <Button.Background>
+                            <SolidColorBrush Color="Red"/>
+                        </Button.Background>
+                    </Button>
+                    <Button x:Name="ConnectMotionSW" Content="모션SW" Foreground="White" Width="60" Height="68" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,2,62,0" Grid.Column="2">
+                        <Button.Background>
+                            <SolidColorBrush Color="Red"/>
+                        </Button.Background>
+                    </Button>
+                    <Button x:Name="ConnectMTSW" Content="검사기OS" Foreground="White" Width="60" Height="69" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,2,-1,0" Grid.Column="2">
+                        <Button.Background>
+                            <SolidColorBrush Color="Red"/>
+                        </Button.Background>
+                    </Button>
+                    <TextBlock TextAlignment="Center" Margin="239,127,0,29" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="11" Width="134" Grid.Column="2">PinCheckSW↔검사기 IP :</TextBlock>
+                    <TextBox x:Name="ClientIP" IsReadOnly="True" Text="127.0.0.1" Width="90" Height="22" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="399,122,0,0" TextAlignment="Center" FontSize="13" Grid.Column="2" />
+                    <TextBlock TextAlignment="Center" Margin="243,148,0,6" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="11" Grid.Column="2">PinCheckSW↔검사기 PORT :</TextBlock>
+                    <TextBox x:Name="ClientPORT" Text="8010" Width="90" Height="22" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="399,145,0,4" TextAlignment="Center" FontSize="13" Grid.Column="2" />
+
+                    <TextBlock TextAlignment="Center" Margin="1,125,0,31" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="11" Grid.ColumnSpan="3">모션SW↔PINCHECKSW IP :</TextBlock>
+                    <TextBox x:Name="ServerIP" Text="192.168.0.10" Width="90" Height="22" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="135,121,0,0" TextAlignment="Center" FontSize="13" Grid.Column="2" />
+                    <TextBlock TextAlignment="Center" Margin="1,149,0,7" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="11" Grid.ColumnSpan="3">모션SW↔PINCHECKSW PORT :</TextBlock>
+                    <TextBox x:Name="ServerPORT" Text="8001" Width="90" Height="22" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="135,145,0,0" TextAlignment="Center" FontSize="13" Grid.Column="2" />
+                    <TextBox x:Name="textBoxTopBoard_Message" TextAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="143" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="243,96,0,0" Grid.Column="2" />
+                    <TextBlock TextAlignment="Center" Margin="243,76,172,73" VerticalAlignment="Center" FontSize="13" Height="22" Grid.Column="2" RenderTransformOrigin="-0.595,0.294"><Run Text="상판 메시지"/></TextBlock>
+                    <Button Content="전송" Width="90" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="399,95,0,0" Click="SendUpboardMessage" Grid.Column="2" />
+                    <Button x:Name="UpBoard_PinCount" Content="핀 수명" Foreground="White" Width="63" Height="68" HorizontalAlignment="Right" VerticalContentAlignment="Top" Margin="0,2,189,0" Grid.Column="2" VerticalAlignment="Top" HorizontalContentAlignment="Center" Background="Green"/>
+                    <Label x:Name="textTopBoard_PinCount" Visibility="Visible" Content="0" Foreground="Black" Background="GreenYellow" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="64" Height="35" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="236,35,0,0" Grid.Column="2" />
+                    <Label x:Name="textTopBoard_PinID" Visibility="Visible" Content="PIN ID" Foreground="White" Background="Red" Width="58" Height="25" HorizontalAlignment="Left" Margin="304,45,0,0" Grid.Column="2" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="9.5"/>
+                </Grid>
+            </GroupBox>
+        </Grid>
+
+        <!--테스트 버튼 그리드-->
+        <Grid Grid.Row="2" Name="controlGrid2" Grid.ColumnSpan="3">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <GroupBox Header="모션SW 테스트" Grid.Row="0" Margin="1,-32,268,70">
+                <Grid HorizontalAlignment="Left" Width="258" Margin="0,0,-2,0" RenderTransformOrigin="0.516,0.436">
+                    <Button Content="PINCHECK OK" Width="90" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,6,0,0" Click="ServerPINCHECKOKTest" />
+                    <Button Content="PINCHECK NG" Width="90" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="105,6,0,0" Click="ServerPINCHENGTest" />
+                </Grid>
+            </GroupBox>
+
+            <GroupBox Header="검사기 테스트" HorizontalAlignment="Right" Grid.Row="0" Margin="0,-32,0,70">
+                <Grid HorizontalAlignment="Right" Width="258" Margin="0,0,-2,0" RenderTransformOrigin="0.516,0.436">
+                    <Button Content="12V ON" Width="70" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,5,0,0" Click="Client12VONTest" />
+                    <Button Content="PINCHECK" Width="70" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="80,5,0,0" Click="ClientPINCHECKTest" />
+                    <Button Content="VOLCHECK" Width="70" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="155,5,0,0" Click="ClientVOLCHECKTest" />
+                    <Button Content="12V OFF" Width="70" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,30,0,0" Click="Client12VOFFTest" />
+                </Grid>
+            </GroupBox>
+        </Grid>
+
+        <!--핀맵 그리드-->
+        <Grid Grid.Row="2" Name="pinGrid" Margin="3,55,3,3" Grid.ColumnSpan="3" Grid.RowSpan="2">
+            <Grid.Resources >
+                <Style TargetType="Border" >
+                    <Setter Property="Padding" Value="2,2,2,2" />
+                </Style>
+            </Grid.Resources>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Button x:Name="btn001" Content="15" Margin="1,1,1,1" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" BorderBrush="Red" Background="Red" />
+            <Button x:Name="btn002" Content="11" Margin="1,1,1,1" Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="0"  BorderBrush="Red" Background="Red" />
+            <Button x:Name="btn003" Content="7"  Margin="1,1,1,1" Grid.Column="6" Grid.ColumnSpan="2" Grid.Row="0"  BorderBrush="Red" Background="Red" />
+            <Button x:Name="btn004" Content="3"  Margin="1,1,1,1" Grid.Column="9" Grid.ColumnSpan="2" Grid.Row="0"  BorderBrush="Red" Background="Red"  />
+            <Button x:Name="btn005" Content="31" Margin="1,1,1,1" Grid.Column="12" Grid.ColumnSpan="2" Grid.Row="0"  BorderBrush="#FF960000" Background="#FF960000" />
+            <Button x:Name="btn006" Content="27" Margin="1,1,1,1" Grid.Column="15" Grid.ColumnSpan="2" Grid.Row="0"  BorderBrush="#FF960000" Background="#FF960000" />
+            <Button x:Name="btn007" Content="23" Margin="1,1,1,1" Grid.Column="18" Grid.ColumnSpan="2" Grid.Row="0"  BorderBrush="#FF960000" Background="#FF960000" />
+            <Button x:Name="btn008" Content="19" Margin="1,1,1,1" Grid.Column="21" Grid.ColumnSpan="2" Grid.Row="0"  BorderBrush="#FF960000" Background="#FF960000" />
+            <Button x:Name="btn009" Content="47" Margin="1,1,1,1" Grid.Column="24" Grid.ColumnSpan="2" Grid.Row="0"  BorderBrush="Red" Background="Red" />
+            <Button x:Name="btn010" Content="43" Margin="1,1,1,1" Grid.Column="27" Grid.ColumnSpan="2" Grid.Row="0"  BorderBrush="Red" Background="Red" />
+            <Button x:Name="btn011" Content="39" Margin="1,1,1,1" Grid.Column="30" Grid.ColumnSpan="2" Grid.Row="0"  BorderBrush="Red" Background="Red" />
+            <Button x:Name="btn012" Content="35" Margin="1,1,1,1" Grid.Column="33" Grid.ColumnSpan="2" Grid.Row="0"  BorderBrush="Red" Background="Red" />
+            <Button x:Name="btn013" Content="63" Margin="1,1,1,1" Grid.Column="36" Grid.ColumnSpan="2" Grid.Row="0"  BorderBrush="#FF960000" Background="#FF960000" />
+            <Button x:Name="btn014" Content="59" Margin="1,1,1,1" Grid.Column="39" Grid.ColumnSpan="2" Grid.Row="0"  BorderBrush="#FF960000" Background="#FF960000" />
+            <Button x:Name="btn015" Content="55" Margin="1,1,1,1" Grid.Column="42" Grid.ColumnSpan="2" Grid.Row="0"  BorderBrush="#FF960000" Background="#FF960000" />
+            <Button x:Name="btn016" Content="51" Margin="1,1,1,1" Grid.Column="45" Grid.ColumnSpan="2" Grid.Row="0"  BorderBrush="#FF960000" Background="#FF960000" />
+
+            <Button x:Name="btn017" Content="14" Margin="1,1,1,1" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1"  BorderBrush="Red" Background="Red" />
+            <Button x:Name="btn018" Content="10" Margin="1,1,1,1" Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="1"  BorderBrush="Red" Background="Red" />
+            <Button x:Name="btn019" Content="6"  Margin="1,1,1,1" Grid.Column="6" Grid.ColumnSpan="2" Grid.Row="1"  BorderBrush="Red" Background="Red" />
+            <Button x:Name="btn020" Content="2"  Margin="1,1,1,1" Grid.Column="9" Grid.ColumnSpan="2" Grid.Row="1"  BorderBrush="Red" Background="Red" />
+            <Button x:Name="btn021" Content="30" Margin="1,1,1,1" Grid.Column="12" Grid.ColumnSpan="2" Grid.Row="1"  BorderBrush="#FF960000" Background="#FF960000" />
+            <Button x:Name="btn022" Content="26" Margin="1,1,1,1" Grid.Column="15" Grid.ColumnSpan="2" Grid.Row="1"  BorderBrush="#FF960000" Background="#FF960000" />
+            <Button x:Name="btn023" Content="22" Margin="1,1,1,1" Grid.Column="18" Grid.ColumnSpan="2" Grid.Row="1"  BorderBrush="#FF960000" Background="#FF960000" />
+            <Button x:Name="btn024" Content="18" Margin="1,1,1,1" Grid.Column="21" Grid.ColumnSpan="2" Grid.Row="1"  BorderBrush="#FF960000" Background="#FF960000" />
+            <Button x:Name="btn025" Content="46" Margin="1,1,1,1" Grid.Column="24" Grid.ColumnSpan="2" Grid.Row="1"  BorderBrush="Red" Background="Red" />
+            <Button x:Name="btn026" Content="42" Margin="1,1,1,1" Grid.Column="27" Grid.ColumnSpan="2" Grid.Row="1"  BorderBrush="Red" Background="Red" />
+            <Button x:Name="btn027" Content="38" Margin="1,1,1,1" Grid.Column="30" Grid.ColumnSpan="2" Grid.Row="1"  BorderBrush="Red" Background="Red" />
+            <Button x:Name="btn028" Content="34" Margin="1,1,1,1" Grid.Column="33" Grid.ColumnSpan="2" Grid.Row="1"  BorderBrush="Red" Background="Red" />
+            <Button x:Name="btn029" Content="62" Margin="1,1,1,1" Grid.Column="36" Grid.ColumnSpan="2" Grid.Row="1"  BorderBrush="#FF960000" Background="#FF960000" />
+            <Button x:Name="btn030" Content="58" Margin="1,1,1,1" Grid.Column="39" Grid.ColumnSpan="2" Grid.Row="1"  BorderBrush="#FF960000" Background="#FF960000" />
+            <Button x:Name="btn031" Content="54" Margin="1,1,1,1" Grid.Column="42" Grid.ColumnSpan="2" Grid.Row="1"  BorderBrush="#FF960000" Background="#FF960000" />
+            <Button x:Name="btn032" Content="50" Margin="1,1,1,1" Grid.Column="45" Grid.ColumnSpan="2" Grid.Row="1"  BorderBrush="#FF960000" Background="#FF960000" />
+
+            <Button x:Name="btn033" Content="13" Margin="1,1,1,1" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2"  BorderBrush="Red" Background="Red" />
+            <Button x:Name="btn034" Content="9" Margin="1,1,1,1" Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="2"  BorderBrush="Red" Background="Red" />
+            <Button x:Name="btn035" Content="5"  Margin="1,1,1,1" Grid.Column="6" Grid.ColumnSpan="2" Grid.Row="2"  BorderBrush="Red" Background="Red" />
+            <Button x:Name="btn036" Content="1"  Margin="1,1,1,1" Grid.Column="9" Grid.ColumnSpan="2" Grid.Row="2"  BorderBrush="Red" Background="Red" />
+            <Button x:Name="btn037" Content="29" Margin="1,1,1,1" Grid.Column="12" Grid.ColumnSpan="2" Grid.Row="2"  BorderBrush="#FF960000" Background="#FF960000" />
+            <Button x:Name="btn038" Content="25" Margin="1,1,1,1" Grid.Column="15" Grid.ColumnSpan="2" Grid.Row="2"  BorderBrush="#FF960000" Background="#FF960000" />
+            <Button x:Name="btn039" Content="21" Margin="1,1,1,1" Grid.Column="18" Grid.ColumnSpan="2" Grid.Row="2"  BorderBrush="#FF960000" Background="#FF960000" />
+            <Button x:Name="btn040" Content="17" Margin="1,1,1,1" Grid.Column="21" Grid.ColumnSpan="2" Grid.Row="2"  BorderBrush="#FF960000" Background="#FF960000" />
+            <Button x:Name="btn041" Content="45" Margin="1,1,1,1" Grid.Column="24" Grid.ColumnSpan="2" Grid.Row="2"  BorderBrush="Red" Background="Red" />
+            <Button x:Name="btn042" Content="41" Margin="1,1,1,1" Grid.Column="27" Grid.ColumnSpan="2" Grid.Row="2"  BorderBrush="Red" Background="Red" />
+            <Button x:Name="btn043" Content="37" Margin="1,1,1,1" Grid.Column="30" Grid.ColumnSpan="2" Grid.Row="2"  BorderBrush="Red" Background="Red" />
+            <Button x:Name="btn044" Content="33" Margin="1,1,1,1" Grid.Column="33" Grid.ColumnSpan="2" Grid.Row="2"  BorderBrush="Red" Background="Red" />
+            <Button x:Name="btn045" Content="61" Margin="1,1,1,1" Grid.Column="36" Grid.ColumnSpan="2" Grid.Row="2"  BorderBrush="#FF960000" Background="#FF960000" />
+            <Button x:Name="btn046" Content="57" Margin="1,1,1,1" Grid.Column="39" Grid.ColumnSpan="2" Grid.Row="2"  BorderBrush="#FF960000" Background="#FF960000" />
+            <Button x:Name="btn047" Content="53" Margin="1,1,1,1" Grid.Column="42" Grid.ColumnSpan="2" Grid.Row="2"  BorderBrush="#FF960000" Background="#FF960000" />
+            <Button x:Name="btn048" Content="49" Margin="1,1,1,1" Grid.Column="45" Grid.ColumnSpan="2" Grid.Row="2"  BorderBrush="#FF960000" Background="#FF960000" />
+
+            <Button x:Name="btn049" Content="12" Margin="1,1,1,1" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3"  BorderBrush="Red" Background="Red" />
+            <Button x:Name="btn050" Content="8"  Margin="1,1,1,1" Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="3"  BorderBrush="Red" Background="Red" />
+            <Button x:Name="btn051" Content="4"  Margin="1,1,1,1" Grid.Column="6" Grid.ColumnSpan="2" Grid.Row="3"  BorderBrush="Red" Background="Red" />
+            <Button x:Name="btn052" Content="0"  Margin="1,1,1,1" Grid.Column="9" Grid.ColumnSpan="2" Grid.Row="3"  BorderBrush="Red" Background="Red" />
+            <Button x:Name="btn053" Content="28" Margin="1,1,1,1" Grid.Column="12" Grid.ColumnSpan="2" Grid.Row="3"  BorderBrush="#FF960000" Background="#FF960000" />
+            <Button x:Name="btn054" Content="24" Margin="1,1,1,1" Grid.Column="15" Grid.ColumnSpan="2" Grid.Row="3"  BorderBrush="#FF960000" Background="#FF960000" />
+            <Button x:Name="btn055" Content="20" Margin="1,1,1,1" Grid.Column="18" Grid.ColumnSpan="2" Grid.Row="3"  BorderBrush="#FF960000" Background="#FF960000" />
+            <Button x:Name="btn056" Content="16" Margin="1,1,1,1" Grid.Column="21" Grid.ColumnSpan="2" Grid.Row="3"  BorderBrush="#FF960000" Background="#FF960000" />
+            <Button x:Name="btn057" Content="44" Margin="1,1,1,1" Grid.Column="24" Grid.ColumnSpan="2" Grid.Row="3"  BorderBrush="Red" Background="Red" />
+            <Button x:Name="btn058" Content="40" Margin="1,1,1,1" Grid.Column="27" Grid.ColumnSpan="2" Grid.Row="3"  BorderBrush="Red" Background="Red" />
+            <Button x:Name="btn059" Content="36" Margin="1,1,1,1" Grid.Column="30" Grid.ColumnSpan="2" Grid.Row="3"  BorderBrush="Red" Background="Red" />
+            <Button x:Name="btn060" Content="32" Margin="1,1,1,1" Grid.Column="33" Grid.ColumnSpan="2" Grid.Row="3"  BorderBrush="Red" Background="Red" />
+            <Button x:Name="btn061" Content="60" Margin="1,1,1,1" Grid.Column="36" Grid.ColumnSpan="2" Grid.Row="3"  BorderBrush="#FF960000" Background="#FF960000" />
+            <Button x:Name="btn062" Content="56" Margin="1,1,1,1" Grid.Column="39" Grid.ColumnSpan="2" Grid.Row="3"  BorderBrush="#FF960000" Background="#FF960000" />
+            <Button x:Name="btn063" Content="52" Margin="1,1,1,1" Grid.Column="42" Grid.ColumnSpan="2" Grid.Row="3"  BorderBrush="#FF960000" Background="#FF960000" />
+            <Button x:Name="btn064" Content="48" Margin="1,1,1,1" Grid.Column="45" Grid.ColumnSpan="2" Grid.Row="3"  BorderBrush="#FF960000" Background="#FF960000" />
+
+            <Button x:Name="btn065"  Margin="1" Grid.Column="21" Grid.ColumnSpan="1" Grid.Row="4"  BorderBrush="Red" Background="Red" FontSize="10">
+                <TextBlock x:Name="text065" Margin="-2" Grid.Column="21" Grid.Row="4" Text="LOCK" LineStackingStrategy="BlockLineHeight" LineHeight="7" FontWeight="Bold" FontSize="8" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Button>
+            <Button x:Name="btn066" Margin="1" Grid.Column="22" Grid.ColumnSpan="1" Grid.Row="4"  BorderBrush="Red" Background="Red" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <TextBlock x:Name="text066" Margin="-2" Grid.Column="22" Grid.Row="4" Text="HPD" LineStackingStrategy="BlockLineHeight" LineHeight="7" FontWeight="Bold" FontSize="8" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Button>
+            <Button x:Name="btn067" Margin="1,1,1,1" Grid.Column="30" Grid.ColumnSpan="2" Grid.Row="4"  BorderBrush="Red" Background="Red">
+                <TextBlock x:Name="text067" Margin="-2" Grid.Column="30" Grid.ColumnSpan="2" Grid.Row="4" Text="I2C&#10;SCL" FontWeight="Bold" FontSize="7" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Button>
+            <Button x:Name="btn068" Margin="1,1,1,1" Grid.Column="33" Grid.ColumnSpan="2" Grid.Row="4"  BorderBrush="Red" Background="Red">
+                <TextBlock x:Name="text068" Margin="-2" Grid.Column="33" Grid.ColumnSpan="2" Grid.Row="4" Text="I2C&#10;SDA" FontWeight="Bold" FontSize="7" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Button>
+            <Button x:Name="btn069"  Margin="1,1,1,1" Grid.Column="36" Grid.ColumnSpan="2" Grid.Row="4"  BorderBrush="Red" Background="Red">
+                <TextBlock x:Name="text069" Margin="-2" Grid.Column="36" Grid.ColumnSpan="2" Grid.Row="4" Text="I2C&#10;POW" FontWeight="Bold" FontSize="7" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Button>
+
+            <Button x:Name="btn070" Margin="1,1,1,1" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="5"  BorderBrush="Red" Background="Red">
+                <TextBlock x:Name="text070" Margin="-1" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="5" Text="AUX1" LineStackingStrategy="BlockLineHeight" LineHeight="7" FontWeight="Bold" FontSize="7" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Button>
+            <Button x:Name="btn071" Content="2"  Margin="1,1,1,1" Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="5"  BorderBrush="Red" Background="Red" />
+            <Button x:Name="btn072" Content="4"  Margin="1,1,1,1" Grid.Column="6" Grid.ColumnSpan="2" Grid.Row="5"  BorderBrush="Red" Background="Red" />
+            <Button x:Name="btn073" Content="7"  Margin="1,1,1,1" Grid.Column="9" Grid.ColumnSpan="2" Grid.Row="5"  BorderBrush="Red" Background="Red" />
+            <Button x:Name="btn074" Content="9" Margin="1,1,1,1" Grid.Column="12" Grid.ColumnSpan="2" Grid.Row="5"  BorderBrush="Red" Background="Red" />
+            <Button x:Name="btn075" Margin="1,1,1,1" Grid.Column="15" Grid.ColumnSpan="2" Grid.Row="5"  BorderBrush="Red" Background="Red">
+                <TextBlock x:Name="text075" Margin="-1" Grid.Column="15" Grid.ColumnSpan="2" Grid.Row="5" Text="AUX2" LineStackingStrategy="BlockLineHeight" LineHeight="7" FontWeight="Bold" FontSize="7" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Button>
+            <Button x:Name="btn076" Margin="1" Grid.Column="18" Grid.ColumnSpan="1" Grid.Row="5"  BorderBrush="Red" Background="Red">
+                <TextBlock x:Name="text076" Margin="-2" Grid.Column="18" Grid.Row="5" Text="HPD1" LineStackingStrategy="BlockLineHeight" LineHeight="7" FontWeight="Bold" FontSize="7" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Button>
+            <Button x:Name="btn077" Margin="1" Grid.Column="19" Grid.ColumnSpan="1" Grid.Row="5"  BorderBrush="Red" Background="Red">
+                <TextBlock x:Name="text077" Margin="-2" Grid.Column="19" Grid.Row="5" Text="HPD0" LineStackingStrategy="BlockLineHeight" LineHeight="7" FontWeight="Bold" FontSize="7" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Button>
+            <Button x:Name="btn078" Margin="1" Grid.Column="21" Grid.ColumnSpan="1" Grid.Row="5"  BorderBrush="Red" Background="Red">
+                <TextBlock x:Name="text078" Margin="-2" Grid.Column="21" Grid.Row="5" Text="HPD3" LineStackingStrategy="BlockLineHeight" LineHeight="7" FontWeight="Bold" FontSize="7" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Button>
+            <Button x:Name="btn079" Margin="1" Grid.Column="22" Grid.ColumnSpan="1" Grid.Row="5"  BorderBrush="Red" Background="Red">
+                <TextBlock x:Name="text079" Margin="-2" Grid.Column="22" Grid.Row="5" Text="HPD2" LineStackingStrategy="BlockLineHeight" LineHeight="7" FontWeight="Bold" FontSize="7" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Button>
+            <Button x:Name="btn080" Margin="1" Grid.Column="24" Grid.ColumnSpan="1" Grid.Row="5"  BorderBrush="#FF7030A0" Background="#FF7030A0">
+                <TextBlock x:Name="text080" Margin="-2" Grid.Column="24" Grid.Row="5" Text="GND" LineStackingStrategy="BlockLineHeight" LineHeight="7" FontWeight="Bold" FontSize="7" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Button>
+            <Button x:Name="btn081" Margin="1" Grid.Column="25" Grid.ColumnSpan="1" Grid.Row="5"  BorderBrush="#FF7030A0" Background="#FF7030A0">
+                <TextBlock x:Name="text081" Margin="-2" Grid.Column="25" Grid.Row="5" Text="GND" LineStackingStrategy="BlockLineHeight" LineHeight="7" FontWeight="Bold" FontSize="7" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Button>
+            <Button x:Name="btn082" Margin="1" Grid.Column="27" Grid.ColumnSpan="1" Grid.Row="5"  BorderBrush="#FF7030A0" Background="#FF7030A0">
+                <TextBlock x:Name="text082" Margin="-2" Grid.Column="27" Grid.Row="5" Text="GND" LineStackingStrategy="BlockLineHeight" LineHeight="7" FontWeight="Bold" FontSize="7" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Button>
+            <Button x:Name="btn083" Margin="1" Grid.Column="28" Grid.ColumnSpan="1" Grid.Row="5"  BorderBrush="#FF7030A0" Background="#FF7030A0">
+                <TextBlock x:Name="text083" Margin="-2" Grid.Column="28" Grid.Row="5" Text="GND" LineStackingStrategy="BlockLineHeight" LineHeight="7" FontWeight="Bold" FontSize="7" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Button>
+            <Button x:Name="btn084" Margin="1" Grid.Column="30" Grid.ColumnSpan="1" Grid.Row="5"  BorderBrush="#FF960000" Background="#FF960000">
+                <TextBlock x:Name="text084" Margin="-2" Grid.Column="30" Grid.Row="5" Text="SCL2" LineStackingStrategy="BlockLineHeight" LineHeight="7" FontWeight="Bold" FontSize="7" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Button>
+            <Button x:Name="btn085" Margin="1" Grid.Column="31" Grid.ColumnSpan="1" Grid.Row="5"  BorderBrush="#FF960000" Background="#FF960000">
+                <TextBlock x:Name="text085" Margin="-2" Grid.Column="31" Grid.Row="5" Text="SDA2" LineStackingStrategy="BlockLineHeight" LineHeight="7" FontWeight="Bold" FontSize="7" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Button>
+            <Button x:Name="btn086" Margin="1" Grid.Column="33" Grid.ColumnSpan="1" Grid.Row="5" Grid.RowSpan="2" BorderBrush="#FF960000" Background="#FF960000">
+                <TextBlock x:Name="text086" Margin="-2" Grid.Column="33" Grid.Row="5" Grid.RowSpan="2" Text="LAN 2.3" LineStackingStrategy="BlockLineHeight" LineHeight="7" FontWeight="Bold" FontSize="7" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Button>
+            <Button x:Name="btn087" Margin="1" Grid.Column="34" Grid.ColumnSpan="1" Grid.Row="5" Grid.RowSpan="2" BorderBrush="#FF960000" Background="#FF960000">
+                <TextBlock x:Name="text087" Margin="-2" Grid.Column="34" Grid.Row="5" Grid.RowSpan="2" Text="LAN 0.1" LineStackingStrategy="BlockLineHeight" LineHeight="7" FontWeight="Bold" FontSize="7" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Button>
+            <Button x:Name="btn088" Margin="1" Grid.Column="36" Grid.ColumnSpan="1" Grid.Row="5"  BorderBrush="#FF7030A0" Background="#FF7030A0">
+                <TextBlock x:Name="text088" Margin="-2" Grid.Column="36" Grid.Row="5" Text="GND" LineStackingStrategy="BlockLineHeight" LineHeight="7" FontWeight="Bold" FontSize="7" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Button>
+            <Button x:Name="btn089" Margin="1" Grid.Column="37" Grid.ColumnSpan="1" Grid.Row="5"  BorderBrush="#FF960000" Background="#FF960000">
+                <TextBlock x:Name="text089" Margin="-2" Grid.Column="37" Grid.Row="5" Text="BDCON" LineStackingStrategy="BlockLineHeight" LineHeight="7" FontWeight="Bold" FontSize="7" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Button>
+            <Button x:Name="btn090" Margin="1" Grid.Column="39" Grid.ColumnSpan="1" Grid.Row="5"  BorderBrush="#FF960000" Background="#FF960000">
+                <TextBlock x:Name="text090" Margin="-2" Grid.Column="39" Grid.Row="5" Text="IO0" LineStackingStrategy="BlockLineHeight" LineHeight="7" FontWeight="Bold" FontSize="7" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Button>
+            <Button x:Name="btn091" Margin="1" Grid.Column="40" Grid.ColumnSpan="1" Grid.Row="5"  BorderBrush="#FF960000" Background="#FF960000">
+                <TextBlock x:Name="text091" Margin="-2" Grid.Column="40" Grid.Row="5" Text="IO1" LineStackingStrategy="BlockLineHeight" LineHeight="7" FontWeight="Bold" FontSize="7" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Button>
+            <Button x:Name="btn092" Margin="1" Grid.Column="42" Grid.ColumnSpan="1" Grid.Row="5"  BorderBrush="#FF960000" Background="#FF960000">
+                <TextBlock x:Name="text092" Margin="-2" Grid.Column="42" Grid.Row="5" Text="IN1" LineStackingStrategy="BlockLineHeight" LineHeight="7" FontWeight="Bold" FontSize="7" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Button>
+            <Button x:Name="btn093" Margin="1" Grid.Column="43" Grid.ColumnSpan="1" Grid.Row="5"  BorderBrush="#FF960000" Background="#FF960000">
+                <TextBlock x:Name="text093" Margin="-2" Grid.Column="43" Grid.Row="5" Text="IN1" LineStackingStrategy="BlockLineHeight" LineHeight="7" FontWeight="Bold" FontSize="7" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Button>
+            <Button x:Name="btn094" Margin="1,1,1,1" Grid.Column="45" Grid.ColumnSpan="2" Grid.Row="5"  BorderBrush="#FF960000" Background="#FF960000">
+                <TextBlock x:Name="text094" Margin="-1" Grid.Column="45" Grid.ColumnSpan="2" Grid.Row="5" Text="USB3" LineStackingStrategy="BlockLineHeight" LineHeight="7" FontWeight="Bold" FontSize="8" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Button>
+            <Button x:Name="btn095" Content="0" Margin="1,1,1,1" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="6"  BorderBrush="Red" Background="Red" />
+            <Button x:Name="btn096" Content="3" Margin="1,1,1,1" Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="6"  BorderBrush="Red" Background="Red" />
+            <Button x:Name="btn097" Content="5" Margin="1,1,1,1" Grid.Column="6" Grid.ColumnSpan="2" Grid.Row="6"  BorderBrush="Red" Background="Red" />
+            <Button x:Name="btn098" Margin="1,1,1,1" Grid.Column="9" Grid.ColumnSpan="2" Grid.Row="6"  BorderBrush="Red" Background="Red">
+                <TextBlock x:Name="text098" Margin="-1" Grid.Column="9" Grid.ColumnSpan="2" Grid.Row="6" Text="AUX3" LineStackingStrategy="BlockLineHeight" LineHeight="7" FontWeight="Bold" FontSize="7" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Button>
+            <Button x:Name="btn099" Content="10" Margin="1,1,1,1" Grid.Column="12" Grid.ColumnSpan="2" Grid.Row="6"  BorderBrush="Red" Background="Red"  />
+            <Button x:Name="btn100" Content="12" Margin="1,1,1,1" Grid.Column="15" Grid.ColumnSpan="2" Grid.Row="6"  BorderBrush="Red" Background="Red"  />
+            <Button x:Name="btn101" Content="14" Margin="1" Grid.Column="18" Grid.ColumnSpan="2" Grid.Row="6"  BorderBrush="Red" Background="Red"  />
+            <Button x:Name="btn102" Margin="1" Grid.Column="21" Grid.ColumnSpan="1" Grid.Row="6"  BorderBrush="#FF960000" Background="#FF960000"  >
+                <TextBlock x:Name="text102" Margin="-2" Grid.Column="21" Grid.Row="6" Text="WP" LineStackingStrategy="BlockLineHeight" LineHeight="7" FontWeight="Bold" FontSize="7" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Button>
+            <Button x:Name="btn103" Margin="1" Grid.Column="22" Grid.ColumnSpan="1" Grid.Row="6"  BorderBrush="#FF960000" Background="#FF960000"  >
+                <TextBlock x:Name="text103" Margin="-2" Grid.Column="22" Grid.Row="6" Text="SCL" LineStackingStrategy="BlockLineHeight" LineHeight="7" FontWeight="Bold" FontSize="7" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Button>
+            <Button x:Name="btn104" Margin="1" Grid.Column="24" Grid.ColumnSpan="1" Grid.Row="6"  BorderBrush="#FF7030A0" Background="#FF7030A0"  >
+                <TextBlock x:Name="text104" Margin="-2" Grid.Column="24" Grid.Row="6" Text="GND" LineStackingStrategy="BlockLineHeight" LineHeight="7" FontWeight="Bold" FontSize="7" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Button>
+            <Button x:Name="btn105" Margin="1" Grid.Column="25" Grid.ColumnSpan="1" Grid.Row="6"  BorderBrush="#FF7030A0" Background="#FF7030A0"  >
+                <TextBlock x:Name="text105" Margin="-2" Grid.Column="25" Grid.Row="6" Text="GND" LineStackingStrategy="BlockLineHeight" LineHeight="7" FontWeight="Bold" FontSize="7" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Button>
+            <Button x:Name="btn106" Margin="1" Grid.Column="27" Grid.ColumnSpan="1" Grid.Row="6"  BorderBrush="#FF7030A0" Background="#FF7030A0"  >
+                <TextBlock x:Name="text106" Margin="-2" Grid.Column="27" Grid.Row="6" Text="GND" LineStackingStrategy="BlockLineHeight" LineHeight="7" FontWeight="Bold" FontSize="7" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Button>
+            <Button x:Name="btn107" Margin="1" Grid.Column="28" Grid.ColumnSpan="1" Grid.Row="6"  BorderBrush="#FF7030A0" Background="#FF7030A0"  >
+                <TextBlock x:Name="text107" Margin="-2" Grid.Column="28" Grid.Row="6" Text="GND" LineStackingStrategy="BlockLineHeight" LineHeight="7" FontWeight="Bold" FontSize="7" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Button>
+            <Button x:Name="btn108" Margin="1" Grid.Column="30" Grid.ColumnSpan="1" Grid.Row="6" Grid.RowSpan="2" BorderBrush="#FF960000" Background="#FF960000"  >
+                <TextBlock x:Name="text108" Margin="-2" Grid.Column="30" Grid.Row="6" Grid.RowSpan="2" Text="LAN 6.7" LineStackingStrategy="BlockLineHeight" LineHeight="7" FontWeight="Bold" FontSize="7" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Button>
+            <Button x:Name="btn109" Margin="1" Grid.Column="31" Grid.ColumnSpan="1" Grid.Row="6" Grid.RowSpan="2" BorderBrush="#FF960000" Background="#FF960000"  >
+                <TextBlock x:Name="text109" Margin="-2" Grid.Column="31" Grid.Row="6" Grid.RowSpan="2" Text="LAN 4.5" LineStackingStrategy="BlockLineHeight" LineHeight="7" FontWeight="Bold" FontSize="7" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Button>
+            <Button x:Name="btn110" Margin="1" Grid.Column="36" Grid.ColumnSpan="2" Grid.Row="6"  BorderBrush="#FF960000" Background="#FF960000"  >
+                <TextBlock x:Name="text110" Margin="-1" Grid.Column="36" Grid.ColumnSpan="2" Grid.Row="6" Text="DO" LineStackingStrategy="BlockLineHeight" LineHeight="7" FontWeight="Bold" FontSize="7" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Button>
+            <Button x:Name="btn111" Margin="1" Grid.Column="39" Grid.ColumnSpan="1" Grid.Row="6"  BorderBrush="#FF960000" Background="#FF960000"  >
+                <TextBlock x:Name="text111" Margin="-2" Grid.Column="39" Grid.Row="6" Text="RX0" LineStackingStrategy="BlockLineHeight" LineHeight="7" FontWeight="Bold" FontSize="7" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Button>
+            <Button x:Name="btn112" Margin="1" Grid.Column="40" Grid.ColumnSpan="1" Grid.Row="6"  BorderBrush="#FF960000" Background="#FF960000"  >
+                <TextBlock x:Name="text112" Margin="-2" Grid.Column="40" Grid.Row="6" Text="TX0" LineStackingStrategy="BlockLineHeight" LineHeight="7" FontWeight="Bold" FontSize="7" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Button>
+            <Button x:Name="btn113" Margin="1" Grid.Column="42" Grid.ColumnSpan="1" Grid.Row="6"  BorderBrush="#FF960000" Background="#FF960000"  >
+                <TextBlock x:Name="text113" Margin="-2" Grid.Column="42" Grid.Row="6" Text="RX1" LineStackingStrategy="BlockLineHeight" LineHeight="7" FontWeight="Bold" FontSize="7" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Button>
+            <Button x:Name="btn114" Margin="1" Grid.Column="43" Grid.ColumnSpan="1" Grid.Row="6"  BorderBrush="#FF960000" Background="#FF960000"  >
+                <TextBlock x:Name="text114" Margin="-2" Grid.Column="43" Grid.Row="6" Text="TX1" LineStackingStrategy="BlockLineHeight" LineHeight="7" FontWeight="Bold" FontSize="7" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Button>
+            <Button x:Name="btn115" Margin="1,1,1,1" Grid.Column="45" Grid.ColumnSpan="2" Grid.Row="6"  BorderBrush="#FF960000" Background="#FF960000"  >
+                <TextBlock x:Name="text115" Margin="-1" Grid.Column="45" Grid.ColumnSpan="2" Grid.Row="6" Text="USB1" LineStackingStrategy="BlockLineHeight" LineHeight="7" FontWeight="Bold" FontSize="8" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Button>
+            <Button x:Name="btn116" Content="1" Margin="1,1,1,1" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="7"  BorderBrush="Red" Background="Red"  />
+            <Button x:Name="btn117" Margin="1,1,1,1" Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="7"  BorderBrush="Red" Background="Red"  >
+                <TextBlock x:Name="text117" Margin="-1" Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="7" Text="AUX0" FontWeight="Bold" FontSize="7" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Button>
+            <Button x:Name="btn118" Content="6" Margin="1,1,1,1" Grid.Column="6" Grid.ColumnSpan="2" Grid.Row="7"  BorderBrush="Red" Background="Red"  />
+            <Button x:Name="btn119" Content="8" Margin="1,1,1,1" Grid.Column="9" Grid.ColumnSpan="2" Grid.Row="7"  BorderBrush="Red" Background="Red"  />
+            <Button x:Name="btn120" Content="11" Margin="1,1,1,1" Grid.Column="12" Grid.ColumnSpan="2" Grid.Row="7"  BorderBrush="Red" Background="Red"  />
+            <Button x:Name="btn121" Content="13" Margin="1,1,1,1" Grid.Column="15" Grid.ColumnSpan="2" Grid.Row="7"  BorderBrush="Red" Background="Red"  />
+            <Button x:Name="btn122" Content="15" Margin="1" Grid.Column="18" Grid.ColumnSpan="2" Grid.Row="7"  BorderBrush="Red" Background="Red"  />
+            <Button x:Name="btn123" Margin="1" Grid.Column="21" Grid.ColumnSpan="1" Grid.Row="7"  BorderBrush="#FF960000" Background="#FF960000"  >
+                <TextBlock x:Name="text123" Margin="-2" Grid.Column="21" Grid.Row="7" Text="SCA" LineStackingStrategy="BlockLineHeight" LineHeight="7" FontWeight="Bold" FontSize="7" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Button>
+            <Button x:Name="btn124" Margin="1" Grid.Column="22" Grid.ColumnSpan="1" Grid.Row="7" BorderBrush="#FF7030A0" Background="#FF7030A0"  >
+                <TextBlock x:Name="text124" Margin="-2" Grid.Column="22" Grid.Row="7" Text="GND" LineStackingStrategy="BlockLineHeight" LineHeight="7" FontWeight="Bold" FontSize="7" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Button>
+            <Button x:Name="btn125" Margin="1" Grid.Column="24" Grid.ColumnSpan="1" Grid.Row="7"  BorderBrush="#FF7030A0" Background="#FF7030A0"  >
+                <TextBlock x:Name="text125" Margin="-2" Grid.Column="24" Grid.Row="7" Text="GND" LineStackingStrategy="BlockLineHeight" LineHeight="7" FontWeight="Bold" FontSize="7" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Button>
+            <Button x:Name="btn126" Margin="1" Grid.Column="25" Grid.ColumnSpan="1" Grid.Row="7"  BorderBrush="#FF7030A0" Background="#FF7030A0"  >
+                <TextBlock x:Name="text126" Margin="-2" Grid.Column="25" Grid.Row="7" Text="GND" LineStackingStrategy="BlockLineHeight" LineHeight="7" FontWeight="Bold" FontSize="7" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Button>
+            <Button x:Name="btn127" Margin="1" Grid.Column="27" Grid.ColumnSpan="1" Grid.Row="7"  BorderBrush="#FF7030A0" Background="#FF7030A0"  >
+                <TextBlock x:Name="text127" Margin="-2" Grid.Column="27" Grid.Row="7" Text="GND" LineStackingStrategy="BlockLineHeight" LineHeight="7" FontWeight="Bold" FontSize="7" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Button>
+            <Button x:Name="btn128" Margin="1" Grid.Column="28" Grid.ColumnSpan="1" Grid.Row="7"  BorderBrush="#FF7030A0" Background="#FF7030A0"  >
+                <TextBlock x:Name="text128" Margin="-2" Grid.Column="28" Grid.Row="7" Text="GND" LineStackingStrategy="BlockLineHeight" LineHeight="7" FontWeight="Bold" FontSize="7" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Button>
+            <Button x:Name="btn129" Margin="1" Grid.Column="33" Grid.ColumnSpan="2" Grid.Row="7" Grid.RowSpan="2" BorderBrush="#FF960000" Background="#FF960000"  >
+                <TextBlock x:Name="text129" Margin="-2" Grid.Column="33" Grid.ColumnSpan="2" Grid.Row="7" Text="LED&#10;ON/OFF" LineStackingStrategy="BlockLineHeight" LineHeight="7" FontWeight="Bold" FontSize="7" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Button>
+            <Button x:Name="btn130" Margin="1" Grid.Column="36" Grid.ColumnSpan="2" Grid.Row="7"  BorderBrush="#FF960000" Background="#FF960000"  >
+                <TextBlock x:Name="text130" Margin="-1" Grid.Column="36" Grid.ColumnSpan="2" Grid.Row="7" Text="RIN" LineStackingStrategy="BlockLineHeight" LineHeight="7" FontWeight="Bold" FontSize="7" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Button>
+            <Button x:Name="btn131" Margin="1" Grid.Column="39" Grid.ColumnSpan="1" Grid.Row="7"  BorderBrush="#FF960000" Background="#FF960000"  >
+                <TextBlock x:Name="text131" Margin="-2" Grid.Column="39" Grid.Row="7" Text="RELAY0" LineStackingStrategy="BlockLineHeight" LineHeight="7" FontWeight="Bold" FontSize="7" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Button>
+            <Button x:Name="btn132" Margin="1" Grid.Column="40" Grid.ColumnSpan="1" Grid.Row="7"  BorderBrush="#FF960000" Background="#FF960000"  >
+                <TextBlock x:Name="text132" Margin="-2" Grid.Column="40" Grid.Row="7" Text="RELAY1" LineStackingStrategy="BlockLineHeight" LineHeight="7" FontWeight="Bold" FontSize="7" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Button>
+            <Button x:Name="btn133" Margin="1,1,1,1" Grid.Column="42" Grid.ColumnSpan="2" Grid.Row="7"  BorderBrush="#FF960000" Background="#FF960000"  >
+                <TextBlock x:Name="text133" Margin="-1" Grid.Column="42" Grid.ColumnSpan="2" Grid.Row="7" Text="USB2" LineStackingStrategy="BlockLineHeight" LineHeight="7" FontWeight="Bold" FontSize="8" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Button>
+            <Button x:Name="btn134" Margin="1,1,1,1" Grid.Column="45" Grid.ColumnSpan="2" Grid.Row="7"  BorderBrush="#FF960000" Background="#FF960000"  >
+                <TextBlock x:Name="text134" Margin="-1" Grid.Column="45" Grid.ColumnSpan="2" Grid.Row="7" Text="USB0" LineStackingStrategy="BlockLineHeight" LineHeight="7" FontWeight="Bold" FontSize="8" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Button>
+        </Grid>
+
+        <!--로그 그리드-->
+        <Grid Grid.Row="4" Name="logGrid" Background="Aqua" Grid.ColumnSpan="3">
+            <ScrollViewer x:Name="logScroll" Margin="5">
+                <TextBox x:Name="logViewer" Width="Auto" TextWrapping="Wrap" Background="White" />
+            </ScrollViewer>
+        </Grid>
+        <CheckBox x:Name="cb_CheckSumMode" Content="CheckSum USE" HorizontalAlignment="Left" Height="17" VerticalAlignment="Top" Margin="73,114,0,0" Grid.Row="1"/>
+        <CheckBox x:Name="cb_ANIMode" Content="ANI USE" HorizontalAlignment="Left" Height="17" VerticalAlignment="Top" Margin="192,114,0,0" Grid.Row="1"/>
+    </Grid>
+</Window>
