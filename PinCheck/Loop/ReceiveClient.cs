@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace PinCheck
 {
@@ -19,6 +20,8 @@ namespace PinCheck
 
         static Action loopReceiveClient = () =>
         {
+            RegistryKey reg = Registry.CurrentUser.CreateSubKey("Software").CreateSubKey("PINCHECKSW").CreateSubKey("SETTING");
+
             while (Store.getInstance().runningLoops)
             {
                 try
@@ -36,7 +39,8 @@ namespace PinCheck
                             Store.getInstance().client.SetIP(((MainWindow)System.Windows.Application.Current.MainWindow).ClientIP.Text);
                             // 소켓 통신 루프의 포트를 레지스트리에 저장된 SERVER PORT 값으로 설정한다.
                             int sockPort;
-                            Int32.TryParse(((MainWindow)System.Windows.Application.Current.MainWindow).reg.GetValue("SERVERPORT").ToString(), out sockPort);
+                            //Int32.TryParse(((MainWindow)System.Windows.Application.Current.MainWindow).reg.GetValue("SERVERPORT").ToString(), out sockPort);
+                            Int32.TryParse(reg.GetValue("SERVERPORT").ToString(), out sockPort);
                             Store.getInstance().client.SetPort(sockPort);
                         });
                         if (Store.getInstance().client.Open())
@@ -193,6 +197,8 @@ namespace PinCheck
                                             sw.Stop();
                                             bTimeout = true;
                                             Store.getInstance().twLog.WriteLog("[상판보드] 핀체크 타임아웃");
+                                            ChangeColour();
+                                            MessageBox.Show("상판보드 통신 에러!\n상판보드를 확인하세요.","E R R O R !", MessageBoxButton.OK, MessageBoxImage.Error);
                                         }
 
                                         if (Store.getInstance().flagReceivePinALL)
@@ -514,6 +520,8 @@ namespace PinCheck
                                         sw.Stop();
                                         bTimeout = true;
                                         Store.getInstance().twLog.WriteLog("[상판보드] 핀체크 타임아웃");
+                                        ChangeColour();
+                                        MessageBox.Show("상판보드 통신 에러!\n상판보드를 확인하세요.", "E R R O R !", MessageBoxButton.OK, MessageBoxImage.Error);
                                     }
 
                                     if (Store.getInstance().flagReceivePinVOL)
@@ -570,27 +578,32 @@ namespace PinCheck
         //CTACT PINCHECK 횟수 체크하는 함수
         static void CountPinCheck(string str_Count)
         {
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                //초기 레지스트리에 저장된 PinCheck 카운트 횟수 불러오기
-                ((MainWindow)System.Windows.Application.Current.MainWindow).reg = Registry.CurrentUser.CreateSubKey("Software").CreateSubKey("PINCHECKSW").CreateSubKey("SETTING");
-                string reg_str_PincheckCount = ((MainWindow)System.Windows.Application.Current.MainWindow).reg.GetValue("PINCHECKCOUNT").ToString();
+            RegistryKey reg = Registry.CurrentUser.CreateSubKey("Software").CreateSubKey("PINCHECKSW").CreateSubKey("SETTING");
 
-                //String을 int로 변환
-                Int32.TryParse(reg_str_PincheckCount, out num_Count);
+            //Application.Current.Dispatcher.Invoke(() =>
+            //{
+            //초기 레지스트리에 저장된 PinCheck 카운트 횟수 불러오기
+            //((MainWindow)System.Windows.Application.Current.MainWindow).reg = Registry.CurrentUser.CreateSubKey("Software").CreateSubKey("PINCHECKSW").CreateSubKey("SETTING");
+            //string reg_str_PincheckCount = ((MainWindow)System.Windows.Application.Current.MainWindow).reg.GetValue("PINCHECKCOUNT").ToString();
+            string reg_str_PincheckCount = reg.GetValue("PINCHECKCOUNT").ToString();
 
-                //핀카운트 횟수 int 를
-                num_Count++;
+            //String을 int로 변환
+            Int32.TryParse(reg_str_PincheckCount, out num_Count);
 
-                //8자리 string으로 변환
-                str_Count = num_Count.ToString("D8");
+            //핀카운트 횟수 int 를
+            num_Count++;
 
-                //카운트한 만큼 8자리 string으로 더한다.
-                Store.getInstance().twLog.WriteLog("PINCHECK COUNT:" + str_Count);
+            //8자리 string으로 변환
+            str_Count = num_Count.ToString("D8");
 
-                ((MainWindow)System.Windows.Application.Current.MainWindow).reg = Registry.CurrentUser.CreateSubKey("Software").CreateSubKey("PINCHECKSW").CreateSubKey("SETTING");
-                ((MainWindow)System.Windows.Application.Current.MainWindow).reg.SetValue("PINCHECKCOUNT", str_Count);
-            });
+            //카운트한 만큼 8자리 string으로 더한다.
+            Store.getInstance().twLog.WriteLog("PINCHECK COUNT:" + str_Count);
+
+            //((MainWindow)System.Windows.Application.Current.MainWindow).reg = Registry.CurrentUser.CreateSubKey("Software").CreateSubKey("PINCHECKSW").CreateSubKey("SETTING");
+            //((MainWindow)System.Windows.Application.Current.MainWindow).reg.SetValue("PINCHECKCOUNT", str_Count);
+            reg.SetValue("PINCHECKCOUNT", str_Count);
+
+            //});
         }
     }
 }

@@ -295,6 +295,8 @@ namespace PinCheck
         // 핀 수명 Count 출력 기능 추가
         static void DisplayPincount1(string message)
         {
+            RegistryKey reg = Registry.CurrentUser.CreateSubKey("Software").CreateSubKey("PINCHECKSW").CreateSubKey("SETTING");
+
             Application.Current.Dispatcher.Invoke(() =>
             {
                 Label textTopBoard_PinCount = (Label)((MainWindow)System.Windows.Application.Current.MainWindow).textTopBoard_PinCount;
@@ -313,8 +315,9 @@ namespace PinCheck
                     textTopBoard_PinCount.Content = message.Substring(0, 8);
 
                     Store.getInstance().twLog.WriteLog("[상판→핀체크] 핀 수명 Count 완료: " + message.Substring(0, 8));
-                    ((MainWindow)System.Windows.Application.Current.MainWindow).reg = Registry.CurrentUser.CreateSubKey("Software").CreateSubKey("PINCHECKSW").CreateSubKey("SETTING");
-                    ((MainWindow)System.Windows.Application.Current.MainWindow).reg.SetValue("PINCOUNT", textTopBoard_PinCount.Content);
+                    //((MainWindow)System.Windows.Application.Current.MainWindow).reg = Registry.CurrentUser.CreateSubKey("Software").CreateSubKey("PINCHECKSW").CreateSubKey("SETTING");
+                    //((MainWindow)System.Windows.Application.Current.MainWindow).reg.SetValue("PINCOUNT", textTopBoard_PinCount.Content);
+                    reg.SetValue("PINCOUNT", textTopBoard_PinCount.Content);
                 }
                 else
                 {
@@ -333,6 +336,8 @@ namespace PinCheck
         }
         static void DisplayPincount2(string message)
         {
+            RegistryKey reg = Registry.CurrentUser.CreateSubKey("Software").CreateSubKey("PINCHECKSW").CreateSubKey("SETTING");
+
             Application.Current.Dispatcher.Invoke(() =>
             {
                 Label textTopBoard_PinCount = (Label)((MainWindow)System.Windows.Application.Current.MainWindow).textTopBoard_PinCount;
@@ -351,8 +356,9 @@ namespace PinCheck
                     textTopBoard_PinCount.Content = message.Substring(0, 8);
 
                     Store.getInstance().twLog.WriteLog("[상판→핀체크] 핀 수명 Count 완료: " + message.Substring(0, 8));
-                    ((MainWindow)System.Windows.Application.Current.MainWindow).reg = Registry.CurrentUser.CreateSubKey("Software").CreateSubKey("PINCHECKSW").CreateSubKey("SETTING");
-                    ((MainWindow)System.Windows.Application.Current.MainWindow).reg.SetValue("PINCOUNT", textTopBoard_PinCount.Content);
+                    //((MainWindow)System.Windows.Application.Current.MainWindow).reg = Registry.CurrentUser.CreateSubKey("Software").CreateSubKey("PINCHECKSW").CreateSubKey("SETTING");
+                    //((MainWindow)System.Windows.Application.Current.MainWindow).reg.SetValue("PINCOUNT", textTopBoard_PinCount.Content);
+                    reg.SetValue("PINCOUNT", textTopBoard_PinCount.Content);
                 }
                 else
                 {
@@ -373,6 +379,8 @@ namespace PinCheck
         // 핀 ID 출력 기능 추가
         static void DisplayPinID(string message)
         {
+            RegistryKey reg = Registry.CurrentUser.CreateSubKey("Software").CreateSubKey("PINCHECKSW").CreateSubKey("SETTING");
+
             Application.Current.Dispatcher.Invoke(() =>
             {
                 Label textTopBoard_PinID = (Label)((MainWindow)System.Windows.Application.Current.MainWindow).textTopBoard_PinID;
@@ -386,15 +394,17 @@ namespace PinCheck
 
                 Store.getInstance().twLog.WriteLog("[상판→핀체크] 핀 ID READ 완료: " + message);
 
-                ((MainWindow)System.Windows.Application.Current.MainWindow).reg = Registry.CurrentUser.CreateSubKey("Software").CreateSubKey("PINCHECKSW").CreateSubKey("SETTING");
-                ((MainWindow)System.Windows.Application.Current.MainWindow).reg.SetValue("PINID", textTopBoard_PinID.Content);
-
+                //((MainWindow)System.Windows.Application.Current.MainWindow).reg = Registry.CurrentUser.CreateSubKey("Software").CreateSubKey("PINCHECKSW").CreateSubKey("SETTING");
+                //((MainWindow)System.Windows.Application.Current.MainWindow).reg.SetValue("PINID", textTopBoard_PinID.Content);
+                reg.SetValue("PINID", textTopBoard_PinID.Content);
             });
         }
 
         // 현재 핀 Count 횟수 출력 기능 추가
         static void DisplayPinStatus(string message)
         {
+            RegistryKey reg = Registry.CurrentUser.CreateSubKey("Software").CreateSubKey("PINCHECKSW").CreateSubKey("SETTING");
+
             Application.Current.Dispatcher.Invoke(() =>
             {
                 Label textTopBoard_PinCount = (Label)((MainWindow)System.Windows.Application.Current.MainWindow).textTopBoard_PinCount;
@@ -413,8 +423,9 @@ namespace PinCheck
                     textTopBoard_PinCount.Content = message.Substring(0, 8);
 
                     Store.getInstance().twLog.WriteLog("[상판→핀체크] 핀 Count READ 완료: " + message.Substring(0, 8));
-                    ((MainWindow)System.Windows.Application.Current.MainWindow).reg = Registry.CurrentUser.CreateSubKey("Software").CreateSubKey("PINCHECKSW").CreateSubKey("SETTING");
-                    ((MainWindow)System.Windows.Application.Current.MainWindow).reg.SetValue("PINCOUNT", textTopBoard_PinCount.Content);
+                    //((MainWindow)System.Windows.Application.Current.MainWindow).reg = Registry.CurrentUser.CreateSubKey("Software").CreateSubKey("PINCHECKSW").CreateSubKey("SETTING");
+                    //((MainWindow)System.Windows.Application.Current.MainWindow).reg.SetValue("PINCOUNT", textTopBoard_PinCount.Content);
+                    reg.SetValue("PINCOUNT", textTopBoard_PinCount.Content);
                 }
                 else
                 {

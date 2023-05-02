@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 
 //
 namespace PinCheck
@@ -99,6 +100,8 @@ namespace PinCheck
                                         sw.Stop();
                                         bTimeout = true;
                                         Store.getInstance().twLog.WriteLog("[상판보드] 핀체크 타임아웃");
+                                        ChangeColour();
+                                        MessageBox.Show("상판보드 통신 에러!\n상판보드를 확인하세요.", "E R R O R !", MessageBoxButton.OK, MessageBoxImage.Error);
                                     }
 
                                     if (Store.getInstance().flagReceivePinALL)
@@ -262,6 +265,8 @@ namespace PinCheck
                                         sw.Stop();
                                         bTimeout = true;
                                         Store.getInstance().twLog.WriteLog("[상판보드] 핀체크 타임아웃");
+                                        ChangeColour();
+                                        MessageBox.Show("상판보드 통신 에러!\n상판보드를 확인하세요.", "E R R O R !", MessageBoxButton.OK, MessageBoxImage.Error);
                                     }
 
                                     if (Store.getInstance().flagReceivePinALL)
@@ -594,6 +599,8 @@ namespace PinCheck
                                         sw.Stop();
                                         bTimeout = true;
                                         Store.getInstance().twLog.WriteLog("[상판보드] 핀체크 타임아웃");
+                                        ChangeColour();
+                                        MessageBox.Show("상판보드 통신 에러!\n상판보드를 확인하세요.", "E R R O R !", MessageBoxButton.OK, MessageBoxImage.Error);
                                     }
 
                                     if (Store.getInstance().flagReceivePinVOL)
@@ -910,6 +917,15 @@ namespace PinCheck
                 }
             }
             //});
+        }
+
+        static void ChangeColour()
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                ((MainWindow)System.Windows.Application.Current.MainWindow).ConnectUpBoard.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(200, 43, 43));
+                ((MainWindow)System.Windows.Application.Current.MainWindow).textTopBoard_PinID.Background = new SolidColorBrush(Color.FromRgb(200, 43, 43));
+            });
         }
     }
 }
